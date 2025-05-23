@@ -48,10 +48,11 @@ builder.Services.AddHostedService<SignalFetcherService>();
 
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-    serverOptions.ConfigureHttpsDefaults(httpsOptions =>
+    serverOptions.ListenAnyIP(8081, listenOptions =>
     {
-        httpsOptions.ServerCertificate = new X509Certificate2("certs/aspnetapp.pfx", "1234");
+        listenOptions.UseHttps("certs/aspnetapp.pfx", "1234");
     });
+    serverOptions.ListenAnyIP(8080);
 });
 
 var app = builder.Build();
