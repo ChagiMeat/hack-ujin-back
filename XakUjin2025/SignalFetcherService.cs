@@ -149,6 +149,7 @@ namespace XakUjin2025
                                                         IsDelete = false
                                                     };
                                                     db.Signals.Add(newSignal);
+                                                    await db.SaveChangesAsync(stoppingToken);
 
                                                     if (data.Data.Signals.TryGetValue(newSignal.SignalSN, out var indicationsFromJson))
                                                     {

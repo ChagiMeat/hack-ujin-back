@@ -197,9 +197,9 @@ namespace XakUjin2025.Controllers
             await _context.SaveChangesAsync();
 
             // Создание ссылки для подтверждения адреса электронной почты.
-            var confirmationLink = $"{Request.Scheme}://{Request.Host}/api/v1/auth/confirm-email?code={emailConfirmationCode}";
-            if (email != null && confirmationLink != null)
-                await _emailSender.EmailConfirmationMessage(email!, confirmationLink!);
+            //var confirmationLink = $"{Request.Scheme}://{Request.Host}/api/v1/auth/confirm-email?code={emailConfirmationCode}";
+            //if (email != null && confirmationLink != null)
+                //await _emailSender.EmailConfirmationMessage(email!, confirmationLink!);
 
             return Ok(new { Message = "Registration successful" });
         }
