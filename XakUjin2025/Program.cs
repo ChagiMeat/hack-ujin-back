@@ -55,6 +55,13 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
     serverOptions.ListenAnyIP(8080);
 });
 
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "API", Version = "v1" });
+    c.AddServer(new Microsoft.OpenApi.Models.OpenApiServer { Url = "https://localhost:8081" });
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -63,7 +70,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
