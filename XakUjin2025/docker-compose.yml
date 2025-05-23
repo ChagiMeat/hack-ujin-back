@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: xakujin_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: xakujindb
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: secretpassword
+    ports:
+      - "3306:3306"
+    networks:
+      - appnet
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "appuser", "-psecretpassword"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    command: --default-authentication-plugin=mysql_native_password
+
+  dotnetapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dotnetapp
+    depends_on:
+      - mysql
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DB_HOST=xakujin_mysql
+      - DB_PORT=3306
+    ports:
+      - "8080:8080"
+    networks:
+      - appnet
+
+volumes:
+  mysql_data:
+
+networks:
+  appnet:
